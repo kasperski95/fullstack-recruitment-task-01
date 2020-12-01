@@ -17,13 +17,12 @@ export function RegistrationScreen() {
   const formBloc = useFormBloc(
     'register',
     {
-      username: '',
       email: '',
       password: '',
     },
     {
       onSubmit: async (data) => {
-        return gql(createUser(data));
+        return gql(createUser({ data }));
       },
       onSuccess: () => {
         history.push(routes.login);
@@ -53,10 +52,6 @@ export function RegistrationScreen() {
           builder={(_, createFormFieldProps) => {
             return (
               <React.Fragment>
-                <FormField.Text
-                  {...createFormFieldProps('username')}
-                  label='Username'
-                />
                 <FormField.Text
                   {...createFormFieldProps('email')}
                   label='E-mail'

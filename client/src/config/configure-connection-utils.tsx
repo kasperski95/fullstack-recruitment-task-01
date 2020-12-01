@@ -102,8 +102,14 @@ export function _configureConnectionUtils(jwt?: string) {
         console.log(documentNode.loc?.source.body);
         console.log(variables);
       }
-      if (result.errors) {
-        throw new Error(result.errors);
+      if (result.errors && result.errors?.length > 0) {
+        console.log(result.errors);
+        throw new Error(
+          result.errors.reduce(
+            (acc: string | undefined, err: Error) => acc + err.message + '\n',
+            ''
+          )
+        );
       }
 
       const queryName = documentNode.loc?.source.body

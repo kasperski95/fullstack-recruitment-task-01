@@ -23,7 +23,7 @@ export function Home() {
       actions={[
         !!userBloc.user
           ? {
-              label: `Log Out (${userBloc.user.username})`,
+              label: `Log Out (${userBloc.user.email})`,
               onClick: () => {
                 userBloc.dispatch(new UserEvents.Logout());
               },

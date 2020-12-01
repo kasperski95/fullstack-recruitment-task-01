@@ -36,7 +36,6 @@ export class UserBloc extends Bloc<UserEvents.UserEvent, UserStates.UserState> {
       if (this.jwt) {
         try {
           this.user = await this.authenticate(this.jwt);
-
           switch (this.user!.role) {
             case UserRoles.default:
               yield new UserStates.Default(this.user!, this.jwt);
@@ -45,6 +44,7 @@ export class UserBloc extends Bloc<UserEvents.UserEvent, UserStates.UserState> {
               throw new Error('Unhandled role');
           }
         } catch (err) {
+          console.error(err.message);
           yield new UserStates.Guest();
         }
       } else {
