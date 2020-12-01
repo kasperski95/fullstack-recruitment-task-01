@@ -1,0 +1,75 @@
+{
+  "Entity": {
+    "scope": "typescript",
+    "prefix": "entity",
+    "body": [
+      "import {",
+      "  Entity as EntityDecorator,",
+      "  PrimaryGeneratedColumn,",
+      "  Column,",
+      "} from \"typeorm\";",
+      "import { Builder } from \"../abstractions/Builder\";",
+      "",
+      "@EntityDecorator()",
+      "export class $1 {",
+      "  @PrimaryGeneratedColumn()",
+      "  id: string;",
+      "",
+      "",
+      "}",
+      "",
+      "export class $1Builder extends Builder<$1> {",
+      "  private $0: $1;",
+      "  constructor(data: {  }) {",
+      "    super();",
+      "    this.$0 = new $1();",
+      "",
+      "  }",
+      "",
+      "  build(): $1 {",
+      "    return this.$0;",
+      "  }",
+      "}"
+    ]
+  },
+
+  "Column": {
+    "scope": "typescript",
+    "prefix": "col",
+    "body": ["@Column()", "$1: $0;"]
+  },
+
+  "Many To One": {
+    "prefix": "manytoone",
+    "body": ["@ManyToOne((type) => $1, ($2) => $2.$0)", "$2: $1;"]
+  },
+
+  "One To Many": {
+    "prefix": "onetomany",
+    "body": ["@OneToMany((type) => $1, ($2) => $2.$0)", "$2s: $1[];"]
+  },
+
+  "One To One": {
+    "prefix": "onetoone",
+    "body": ["@OneToOne((type) => $0)", "@JoinColumn()", "$1: $0;"]
+  },
+
+  "React": {
+    "prefix": "react",
+    "body": [
+      "import React from 'react';",
+      "import { StyleSheet, Text } from 'react-native';",
+      "",
+      "export function $TM_FILENAME_BASE() {",
+      "  return ${0:<Text>$TM_FILENAME_BASE</Text>};",
+      "}",
+      "",
+      "const styles = StyleSheet.create({",
+      "  container: {",
+      "",
+      "  },",
+      "});",
+      ""
+    ]
+  }
+}

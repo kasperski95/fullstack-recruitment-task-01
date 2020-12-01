@@ -1,0 +1,21 @@
+{
+  "init": {
+    "prefix": "init",
+    "body": [
+      "import React from 'react';",
+      "import { createUseStyle } from '@src/config/theme';",
+
+      "",
+      "export function ${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}() {",
+      "  const { styles } = useStyle();",
+      "",
+      "  return <div style={styles.container}>$0${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}</div>;",
+      "}",
+      "",
+      "const useStyle = createUseStyle(({ theme, dimensions, shared }) => ({",
+      "  container: {},",
+      "}));",
+      ""
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "files.exclude": {
+    "**/.expo*/": true,
+    "**/node_modules/": true,
+    "**/web-build/": true,
+    "**/package-lock.json": true
+  },
+  "terminal.integrated.shellArgs.windows": [
+    "-NoExit",
+    "-Command",
+    "${workspaceFolder}/bin/init.ps1"
+  ],
+  "files.eol": "\n",
+  "typescript.preferences.quoteStyle": "single",
+  "cSpell.words": [
+    "ILIKE",
+    "SERIALIZABLE",
+    "dataloader",
+    "foobaz",
+    "ormconfig",
+    "postgres",
+    "printf",
+    "tsyringe",
+    "typeorm",
+    "wieik"
+  ],
+  "cSpell.language": "en, pl",
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  }
+}

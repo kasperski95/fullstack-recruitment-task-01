@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS tmp_database;
+CREATE DATABASE tmp_database;
