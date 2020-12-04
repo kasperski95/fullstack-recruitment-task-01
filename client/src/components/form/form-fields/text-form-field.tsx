@@ -1,42 +1,25 @@
-import { TextField } from '@material-ui/core';
 import { FormBloc, FormEvents } from '@src/blocs/form';
-import { createUseStyle } from '@src/config/theme';
 import React from 'react';
+import { TextField, TextFieldProps } from './text-field';
 
-export function TextFormField<T, R>(props: {
-  id: keyof T;
-  value: T[keyof T] | undefined;
+export interface TextFormFieldProps<T, R, K extends keyof T>
+  extends TextFieldProps<T[K]> {
+  id: K;
   bloc: FormBloc<T, R>;
-  label: string;
-  obscure?: boolean;
-  mapValueToString?: (value: T[keyof T] | undefined) => string;
-}) {
-  const { styles } = useStyle();
+}
 
-  // fixes cursor being at the end all the time
-  const [localValue, setLocalValue] = React.useState(
-    props.mapValueToString
-      ? props.mapValueToString(props.value)
-      : ((props.value || '') as string)
-  );
+export function TextFormField<T, R, K extends keyof T>(
+  props: TextFormFieldProps<T, R, K>
+) {
+  const { ...otherProps } = props;
 
   return (
     <TextField
-      style={styles.container}
-      value={localValue}
-      label={props.label}
-      autoComplete='none'
-      type={props.obscure ? 'password' : undefined}
-      onChange={(e) => {
-        setLocalValue(e.target.value);
-        props.bloc.dispatch(new FormEvents.Update<T>(props.id, e.target.value));
+      {...otherProps}
+      multiline={true}
+      onChange={(value) => {
+        props.bloc.dispatch(new FormEvents.Update<T>(props.id, value));
       }}
     />
   );
 }
-
-const useStyle = createUseStyle(({ theme, dimensions, shared }) => ({
-  container: {
-    marginBottom: dimensions.gutterLarge,
-  },
-}));

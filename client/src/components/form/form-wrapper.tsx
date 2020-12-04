@@ -9,6 +9,7 @@ import { Button } from '../buttons';
 export function FormWrapper<T, R>(props: {
   children: React.ReactNode;
   formBloc: FormBloc<T, R>;
+  submitLabel?: string;
   style?: React.CSSProperties;
 }) {
   const { styles } = useStyle();
@@ -24,7 +25,7 @@ export function FormWrapper<T, R>(props: {
 
             return (
               <Button.Submit
-                label='Wyślij'
+                label={props.submitLabel || 'Submit'}
                 onClick={
                   disabled
                     ? undefined

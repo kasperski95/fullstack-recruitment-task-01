@@ -26,7 +26,7 @@ export function configureTheme<T extends UnlimitedDepthStyle, D>(data: {
               palette: {
                 text: {
                   primary: theme.active.contrast.main,
-                  secondary: 'red',
+                  secondary: theme.active.contrast.weak,
                 },
                 primary: { main: theme.clickable.main },
                 background: {
