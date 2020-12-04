@@ -21,7 +21,7 @@ function generateColorGroupWithContrast(
     value: number,
     darkMode: boolean
   ) => {
-    if (Color(main).saturationv() < 80) {
+    if (Color(main).saturationv() < 20) {
       return (darkMode
         ? Color(color).darken(value)
         : Color(color).lighten(value)

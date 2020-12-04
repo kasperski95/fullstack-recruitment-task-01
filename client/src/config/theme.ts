@@ -4,13 +4,13 @@ import Color from 'color';
 const palette = {
   white: 'white',
   black: 'black',
-  blue: Color('#1E518A').lighten(0.5).toString(),
+  blue: '#1E518A',
 };
 
 export const { ThemeProvider, createUseStyle, theme } = configureTheme({
   theme: generateTheme('light', {
     clickable: {
-      main: palette.blue,
+      main: Color(palette.blue).rotate(180).toString(),
       contrast: {
         main: palette.white,
       },
