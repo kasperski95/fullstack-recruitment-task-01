@@ -14,12 +14,24 @@ export interface TextFieldProps<T> {
 export function TextField<T>(props: TextFieldProps<T>) {
   const { styles } = useStyle();
 
-  // fixes cursor being at the end all the time
-  const [localValue, setLocalValue] = React.useState(
-    props.mapValueToString
-      ? props.mapValueToString(props.value)
-      : ((props.value || '') as string)
+  // BEGIN_BUGFIX: cursor jumping to the end
+  const mapValueToString = React.useCallback(
+    (value: T | undefined) => {
+      return props.mapValueToString
+        ? props.mapValueToString(value)
+        : ((value || '') as string);
+    },
+    [props]
   );
+
+  const [localValue, setLocalValue] = React.useState(
+    mapValueToString(props.value)
+  );
+
+  React.useEffect(() => {
+    setLocalValue(mapValueToString(props.value));
+  }, [props.value, mapValueToString]);
+  // END_BUGFIX
 
   return (
     <MUITextField
