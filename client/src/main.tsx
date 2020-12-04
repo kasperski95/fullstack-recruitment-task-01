@@ -1,60 +1,34 @@
 import { ApolloProvider } from '@apollo/react-hooks';
 import React from 'react';
+import { I18nEvents, useI18nBloc } from './blocs/i18n';
 import { ThemeEvents, useThemeBloc } from './blocs/theme';
-import { UserEvents, UserStates, useUserBloc } from './blocs/user';
-import { SplashScreen } from './components/splash-screen';
+import { I18n } from './components/i18n';
 import { ThemeChanger } from './components/theme-changer';
-import {
-  configureConnectionUtils,
-  _configureConnectionUtils,
-} from './config/configure-connection-utils';
+import { configureConnectionUtils } from './config/configure-connection-utils';
 import { configureApollo } from './config/configure-graphql';
 import { ThemeProvider } from './config/theme';
-import { me } from './gql/me';
-import { User } from './models/user';
-import { Bloc, BlocBuilder } from './modules/react-bloc';
+import { Bloc } from './modules/react-bloc';
 import { Router } from './router';
 
 export function App() {
   Bloc.logger = console;
-
-  const userBloc = useUserBloc(async (jwt) => {
-    const { gql } = _configureConnectionUtils(jwt);
-    return (await gql(me(undefined))) as User;
-  });
+  const i18nBloc = useI18nBloc();
   const themeBloc = useThemeBloc();
-
-  userBloc.dispatch(new UserEvents.Init());
   themeBloc.dispatch(new ThemeEvents.Init());
+  i18nBloc.dispatch(new I18nEvents.ChangeLanguage('en'));
+
+  const { ConnectionProvider } = configureConnectionUtils();
 
   return (
     <ThemeProvider>
       <ThemeChanger>
-        <ApolloProvider client={configureApollo(userBloc.jwt)}>
-          <BlocBuilder
-            bloc={userBloc}
-            builder={(state) => {
-              if (state instanceof UserStates.Identifying)
-                return <SplashScreen />;
-              else if (state instanceof UserStates.Authenticated) {
-                const { ConnectionProvider } = configureConnectionUtils(
-                  state.jwt
-                );
-                return (
-                  <ConnectionProvider>
-                    <Router />
-                  </ConnectionProvider>
-                );
-              }
-              const { ConnectionProvider } = configureConnectionUtils();
-              return (
-                <ConnectionProvider>
-                  <Router />
-                </ConnectionProvider>
-              );
-            }}
-          />
-        </ApolloProvider>
+        <I18n i18nBloc={i18nBloc}>
+          <ApolloProvider client={configureApollo()}>
+            <ConnectionProvider>
+              <Router />
+            </ConnectionProvider>
+          </ApolloProvider>
+        </I18n>
       </ThemeChanger>
     </ThemeProvider>
   );

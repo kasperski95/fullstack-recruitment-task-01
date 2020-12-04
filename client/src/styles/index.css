@@ -20,3 +20,8 @@ html, body, #root {
   height: 100%;
   min-width: 500px
 }
+
+html {
+  background-image: url(/assets/images/omni-bg.svg);
+  background-size: cover;
+}

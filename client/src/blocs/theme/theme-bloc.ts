@@ -8,7 +8,7 @@ export class ThemeBloc extends Bloc<
   ThemeStates.ThemeState
 > {
   constructor() {
-    super(new ThemeStates.Dark());
+    super(new ThemeStates.Light());
   }
 
   public isDarkTheme() {
