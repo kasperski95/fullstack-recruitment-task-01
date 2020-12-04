@@ -7,7 +7,7 @@ interface I18nContext {
 
 let TranslationContext: React.Context<I18nContext>;
 
-export function createI18nContext(translations: Translations) {
+export function configureI18n(translations: Translations) {
   TranslationContext = React.createContext({ translations });
   return (props: { children: React.ReactChild }) => (
     <TranslationContext.Provider value={{ translations }}>

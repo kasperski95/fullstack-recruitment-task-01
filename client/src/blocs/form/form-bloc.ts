@@ -28,7 +28,7 @@ export class FormBloc<T extends { [key: string]: any }, R> extends Bloc<
         yield new FormStates.Sending(this.data);
         if (this.options?.onSubmit) {
           const result = await this.options.onSubmit(this.data);
-          if (this.options?.onSuccess) this.options.onSuccess(result);
+          if (this.options?.onSuccess && result) this.options.onSuccess(result);
         }
         yield new FormStates.Editable(this.data);
       } catch (err) {

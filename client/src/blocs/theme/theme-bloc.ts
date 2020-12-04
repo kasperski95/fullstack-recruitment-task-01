@@ -16,7 +16,7 @@ export class ThemeBloc extends Bloc<
   }
 
   async *mapEventToState(event: ThemeEvents.ThemeEvent) {
-    if (event instanceof ThemeEvents.Init) {
+    if (event instanceof ThemeEvents.Load) {
       switch (localStorage.getItem('theme') as Themes) {
         case 'light':
           yield new ThemeStates.Light();
