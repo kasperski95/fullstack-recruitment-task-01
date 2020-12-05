@@ -9,6 +9,27 @@ import {
   UnlimitedDepthStyle,
 } from './types';
 
+function mapAppThemeToMUI(theme: Theme) {
+  return createMuiTheme({
+    palette: {
+      text: {
+        primary: theme.active.contrast.main,
+        secondary: theme.active.contrast.weak,
+      },
+      primary: { main: theme.clickable.main },
+      background: {
+        default: theme.active.dark,
+        paper: theme.active.light,
+      },
+      error: { main: theme.active.error.main },
+      success: { main: theme.active.success.main },
+      warning: { main: theme.active.warning.main },
+      type: theme.active === theme.dark ? 'dark' : 'light',
+      divider: theme.active.divider.main,
+    },
+  });
+}
+
 export function configureTheme<T extends UnlimitedDepthStyle, D>(data: {
   theme: Theme;
   dimensions: D;
@@ -20,30 +41,17 @@ export function configureTheme<T extends UnlimitedDepthStyle, D>(data: {
     theme: data.theme,
     ThemeProvider: (props: { children: React.ReactNode; theme?: Theme }) => {
       const theme = props.theme || data.theme;
+
+      const [muiTheme, setMuiTheme] = React.useState(mapAppThemeToMUI(theme));
+
+      React.useEffect(() => {
+        setMuiTheme(mapAppThemeToMUI(theme));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [theme.activeName]);
+
       return (
         <ThemeContext.Provider value={{ ...data, theme }}>
-          <ThemeProvider
-            theme={createMuiTheme({
-              palette: {
-                text: {
-                  primary: theme.active.contrast.main,
-                  secondary: theme.active.contrast.weak,
-                },
-                primary: { main: theme.clickable.main },
-                background: {
-                  default: theme.active.dark,
-                  paper: theme.active.light,
-                },
-                error: { main: theme.active.error.main },
-                success: { main: theme.active.success.main },
-                warning: { main: theme.active.warning.main },
-                type: theme.active === theme.dark ? 'dark' : 'light',
-                divider: theme.active.divider.main,
-              },
-            })}
-          >
-            {props.children}
-          </ThemeProvider>
+          <ThemeProvider theme={muiTheme}>{props.children}</ThemeProvider>
         </ThemeContext.Provider>
       );
     },
@@ -58,6 +66,7 @@ export function configureTheme<T extends UnlimitedDepthStyle, D>(data: {
         const newTheme = themeName
           ? {
               ...theme,
+              activeName: themeName,
               get active() {
                 return theme[themeName!];
               },

@@ -84,6 +84,7 @@ export function generateTheme(
   }
 ): Theme {
   return {
+    activeName: active,
     get active() {
       return this[active];
     },

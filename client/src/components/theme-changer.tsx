@@ -9,8 +9,10 @@ export function ThemeChanger(props: { children: React.ReactChild }) {
   const { theme } = useStyle(themeName);
   const themeBloc = useThemeBloc();
 
-  // document.body.style.backgroundColor = theme.active.main;
-  document.body.style.color = theme.active.contrast.main;
+  React.useLayoutEffect(() => {
+    document.body.style.color = theme.active.contrast.main;
+  }, [theme.active.contrast.main]);
+
   return (
     <ThemeProvider theme={theme}>
       <BlocBuilder

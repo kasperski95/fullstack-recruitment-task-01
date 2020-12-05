@@ -25,4 +25,5 @@ html, body, #root {
 html {
   background-image: url(/assets/images/omni-bg.svg);
   background-size: cover;
+  background-attachment: fixed;
 }

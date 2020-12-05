@@ -39,6 +39,7 @@ export type Themes = keyof ThemeCore;
 
 export interface Theme extends ThemeCore {
   active: MediumTheme;
+  activeName: string;
 }
 
 export interface Style {
