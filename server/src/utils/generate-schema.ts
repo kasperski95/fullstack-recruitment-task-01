@@ -1,5 +1,4 @@
 import { buildSchema } from 'type-graphql';
-import { createAuthChecker } from './create-auth-checker';
 
 export async function generateSchema() {
   return await buildSchema({
@@ -8,6 +7,5 @@ export async function generateSchema() {
       __dirname + '/../subscriptions/**/*.{ts,js}',
     ],
     validate: false, // fixes "no metadata found" warnings
-    authChecker: createAuthChecker,
   });
 }

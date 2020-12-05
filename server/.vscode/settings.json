@@ -21,9 +21,9 @@
     "ormconfig",
     "postgres",
     "printf",
+    "respawn",
     "tsyringe",
-    "typeorm",
-    "wieik"
+    "typeorm"
   ],
   "cSpell.language": "en, pl",
   "[typescript]": {
