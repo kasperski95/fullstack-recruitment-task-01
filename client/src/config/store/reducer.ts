@@ -19,13 +19,18 @@ export function reducer(
         ...store,
         notes: [...store.notes, { content, date: new Date(), id: uuid() }].sort(
           (lhs, rhs) => {
-            return Dayjs(lhs.date).isBefore(Dayjs(rhs.date)) ? 1 : -1;
+            const lhsDate = Dayjs(lhs.date);
+            const rhsDate = Dayjs(rhs.date);
+            if (lhsDate.isSame(rhsDate, 'ms')) {
+              return lhs.id.localeCompare(rhs.id);
+            } else
+              return Dayjs(lhs.date).isBefore(Dayjs(rhs.date), 'ms') ? 1 : -1;
           }
         ),
       }));
 
     case 'deleteNode':
-      return handle('deleteNode')(({ nodeId }) => ({
+      return handle('deleteNode')(({ noteId: nodeId }) => ({
         ...store,
         notes: [...store.notes.filter(({ id }) => id !== nodeId)],
       }));

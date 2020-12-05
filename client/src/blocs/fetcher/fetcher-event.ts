@@ -7,3 +7,5 @@ export class Fetch<T> extends FetcherEvent {
     super();
   }
 }
+
+export class Reset extends FetcherEvent {}

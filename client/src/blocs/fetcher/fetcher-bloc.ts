@@ -11,7 +11,9 @@ export class FetcherBloc<T, R> extends Bloc<
   }
 
   async *mapEventToState(event: FetcherEvents.FetcherEvent) {
-    if (event instanceof FetcherEvents.Fetch) {
+    if (event instanceof FetcherEvents.Reset) {
+      yield new FetcherStates.Loading();
+    } else if (event instanceof FetcherEvents.Fetch) {
       try {
         yield new FetcherStates.Loading();
         await new Promise((resolve) => setTimeout(resolve, 250));

@@ -3,7 +3,7 @@ export interface Actions {
     content: string;
   };
   deleteNode: {
-    nodeId: string;
+    noteId: string;
   };
   ping: undefined;
 }

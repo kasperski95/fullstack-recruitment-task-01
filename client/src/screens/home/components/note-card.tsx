@@ -32,7 +32,7 @@ export function NoteCard(props: { index: number; style: React.CSSProperties }) {
           {
             label: translations.home.deleteNote,
             onClick: () => {
-              dispatch('deleteNode')({ nodeId: note.id });
+              dispatch('deleteNode')({ noteId: note.id });
             },
           },
         ]}

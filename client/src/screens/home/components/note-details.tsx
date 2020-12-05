@@ -1,6 +1,8 @@
 import { FetcherEvents, useFetcherBloc } from '@src/blocs/fetcher';
+import { Button } from '@src/components/buttons';
 import { Fetcher } from '@src/components/fetcher';
 import { Markdown } from '@src/components/markdown';
+import { useI18n } from '@src/config/configure-i18n';
 import { useStore } from '@src/config/configure-store';
 import { routes } from '@src/config/routes';
 import { createUseStyle } from '@src/config/theme';
@@ -11,7 +13,8 @@ import { useHistory } from 'react-router-dom';
 
 export function NoteDetails(props: { noteId: string }) {
   const { styles } = useStyle();
-  const { state } = useStore();
+  const { state, dispatch } = useStore();
+  const { translations } = useI18n();
   const history = useHistory();
 
   const fetcherBloc = useFetcherBloc(
@@ -27,6 +30,10 @@ export function NoteDetails(props: { noteId: string }) {
     );
   }, [props.noteId, fetcherBloc, state.notes]);
 
+  React.useEffect(() => () => {
+    fetcherBloc.dispatch(new FetcherEvents.Reset());
+  });
+
   return (
     <Fetcher
       fetcherBloc={fetcherBloc}
@@ -36,6 +43,16 @@ export function NoteDetails(props: { noteId: string }) {
       builder={(note) => {
         return (
           <div style={styles.container}>
+            <div style={styles.actionsWrapper}>
+              <Button.Flat
+                label={translations.home.deleteNote}
+                onClick={() => {
+                  dispatch('deleteNode')({ noteId: note.id });
+                  history.push(routes.home);
+                  fetcherBloc.dispatch(new FetcherEvents.Reset());
+                }}
+              />
+            </div>
             <div style={styles.title}>{humanizeDate(note.date)}</div>
             <Markdown children={note.content} />
           </div>
@@ -49,6 +66,11 @@ const useStyle = createUseStyle(({ theme, dimensions, shared }) => ({
   container: {
     padding: dimensions.gutterLarge,
     width: '100%',
+  },
+  actionsWrapper: {
+    marginTop: -dimensions.gutterMedium,
+    marginRight: -dimensions.gutterMedium,
+    textAlign: 'right',
   },
   title: { ...shared.typography.h1, marginBottom: dimensions.gutterMedium },
   content: shared.typography.default,
