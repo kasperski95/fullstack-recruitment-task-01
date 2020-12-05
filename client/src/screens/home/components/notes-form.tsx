@@ -1,12 +1,17 @@
 import { useFormBloc } from '@src/blocs/form';
 import { Form, FormField } from '@src/components/form';
 import { useI18n } from '@src/config/configure-i18n';
-import { useAppReducer } from '@src/config/configure-store';
+import { withStore } from '@src/config/configure-store';
 import React from 'react';
 
-export function NotesForm() {
+interface NotesFormProps {}
+
+interface NotesFormStoreProps {
+  actions: { addNote: (noteContent: string) => void };
+}
+
+function _NotesForm(props: NotesFormProps & NotesFormStoreProps) {
   const { translations } = useI18n();
-  const { dispatch } = useAppReducer();
 
   const formBloc = useFormBloc(
     'home',
@@ -15,7 +20,7 @@ export function NotesForm() {
     },
     {
       onSubmit: (formData) => {
-        dispatch({ type: 'addNote', payload: formData });
+        props.actions.addNote(formData.content);
       },
     }
   );
@@ -38,3 +43,16 @@ export function NotesForm() {
     </Form.Wrapper>
   );
 }
+
+export const NotesForm = withStore<NotesFormProps, NotesFormStoreProps>(
+  _NotesForm,
+  (state, dispatch) => {
+    return {
+      actions: {
+        addNote: (noteContent) => {
+          dispatch('addNote')({ content: noteContent });
+        },
+      },
+    };
+  }
+);

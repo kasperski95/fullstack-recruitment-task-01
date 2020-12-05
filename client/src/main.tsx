@@ -6,34 +6,36 @@ import { I18n } from './components/i18n';
 import { ThemeChanger } from './components/theme-changer';
 import { configureConnectionUtils } from './config/configure-connection-utils';
 import { configureApollo } from './config/configure-graphql';
-import { useStore } from './config/configure-store';
+import { useConfigureStore } from './config/configure-store';
 import { ThemeProvider } from './config/theme';
 import { Bloc } from './modules/react-bloc';
 import { Router } from './router';
 
 export function App() {
-  Bloc.logger = console;
   const i18nBloc = useI18nBloc();
   const themeBloc = useThemeBloc();
-  themeBloc.dispatch(new ThemeEvents.Load());
-  i18nBloc.dispatch(new I18nEvents.ChangeLanguage('en'));
+
+  React.useEffect(() => {
+    Bloc.logger = console;
+    themeBloc.dispatch(new ThemeEvents.Load());
+    i18nBloc.dispatch(new I18nEvents.ChangeLanguage('en'));
+  }, [themeBloc, i18nBloc]);
 
   const { ConnectionProvider } = configureConnectionUtils();
-  const { StoreProvider } = useStore();
-
+  const { StoreProvider } = useConfigureStore();
   return (
-    <StoreProvider>
-      <ThemeProvider>
-        <ThemeChanger>
-          <I18n i18nBloc={i18nBloc}>
+    <ThemeProvider>
+      <ThemeChanger>
+        <I18n i18nBloc={i18nBloc}>
+          <StoreProvider>
             <ApolloProvider client={configureApollo()}>
               <ConnectionProvider>
                 <Router />
               </ConnectionProvider>
             </ApolloProvider>
-          </I18n>
-        </ThemeChanger>
-      </ThemeProvider>
-    </StoreProvider>
+          </StoreProvider>
+        </I18n>
+      </ThemeChanger>
+    </ThemeProvider>
   );
 }

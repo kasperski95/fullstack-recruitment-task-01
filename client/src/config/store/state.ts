@@ -1,5 +1,6 @@
 import { Note } from '@src/models/note';
 
-export const store = {
+export const state = {
   notes: [] as Note[],
+  test: '',
 };

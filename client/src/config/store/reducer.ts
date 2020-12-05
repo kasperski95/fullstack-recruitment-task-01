@@ -1,16 +1,19 @@
 import { v4 as uuid } from 'uuid';
-import { Actions, Store } from './index';
+import { Actions, AppState } from './index';
 
 export function reducer<K extends keyof Actions>(
-  store: Store,
+  store: AppState,
   { type, payload }: { type: K; payload: Actions[K] }
-): Store {
+): AppState {
   switch (type as keyof Actions) {
     case 'addNote':
       return {
         ...store,
         notes: [...store.notes, { ...payload, date: new Date(), id: uuid() }],
       };
+    case 'ping':
+      console.log('pong');
+      return store;
     default:
       return store;
   }

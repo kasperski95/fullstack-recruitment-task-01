@@ -1,6 +1,6 @@
 import { Actions } from './actions';
-import { store } from './store';
-type Store = typeof store;
+import { state } from './state';
+type AppState = typeof state;
 
-export { store };
-export type { Store, Actions };
+export { state };
+export type { AppState, Actions };

@@ -3,6 +3,7 @@ import { useI18n } from '@src/config/configure-i18n';
 import { createUseStyle } from '@src/config/theme';
 import React from 'react';
 import { NotesForm } from './components/notes-form';
+import { NotesList } from './components/notes-list';
 
 export function Home() {
   const { styles } = useStyle();
@@ -15,6 +16,7 @@ export function Home() {
       }}
     >
       <NotesForm />
+      <NotesList />
     </MainTemplate>
   );
 }
