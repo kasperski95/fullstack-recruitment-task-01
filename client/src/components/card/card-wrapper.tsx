@@ -2,20 +2,30 @@ import { createUseStyle, ThemeProvider } from '@src/config/theme';
 import { combine } from '@src/modules/css-in-jsx';
 import React from 'react';
 
-export function CardWrapper(props: {
-  children: React.ReactNode;
-  style?: React.CSSProperties;
-}) {
-  const { styles, theme } = useStyle();
+export const CardWrapper = React.forwardRef(
+  (
+    props: {
+      children: React.ReactNode;
+      onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+      style?: React.CSSProperties;
+    },
+    ref?: React.ForwardedRef<HTMLDivElement>
+  ) => {
+    const { styles, theme } = useStyle();
 
-  return (
-    <ThemeProvider theme={theme}>
-      <div style={combine([styles.container, props.style])}>
-        {props.children}
-      </div>
-    </ThemeProvider>
-  );
-}
+    return (
+      <ThemeProvider theme={theme}>
+        <div
+          style={combine([styles.container, props.style])}
+          onClick={props.onClick}
+          ref={ref}
+        >
+          {props.children}
+        </div>
+      </ThemeProvider>
+    );
+  }
+);
 
 const useStyle = createUseStyle(({ theme, dimensions, shared }) => {
   return {

@@ -12,6 +12,7 @@ interface NotesFormStoreProps {
 
 function _NotesForm(props: NotesFormProps & NotesFormStoreProps) {
   const { translations } = useI18n();
+  const ref = React.useRef<HTMLDivElement>(null);
 
   const formBloc = useFormBloc(
     'home',
@@ -29,22 +30,24 @@ function _NotesForm(props: NotesFormProps & NotesFormStoreProps) {
   );
 
   return (
-    <Form.Wrapper formBloc={formBloc} submitLabel={translations.home.addNote}>
-      <Form.Builder
-        formBloc={formBloc}
-        builder={(data, createFormFieldProps) => {
-          return (
-            <React.Fragment>
-              <FormField.Text
-                label={translations.home.note}
-                required={true}
-                {...createFormFieldProps('content')}
-              />
-            </React.Fragment>
-          );
-        }}
-      />
-    </Form.Wrapper>
+    <div ref={ref}>
+      <Form.Wrapper formBloc={formBloc} submitLabel={translations.home.addNote}>
+        <Form.Builder
+          formBloc={formBloc}
+          builder={(data, createFormFieldProps) => {
+            return (
+              <React.Fragment>
+                <FormField.Text
+                  label={translations.home.note}
+                  required={true}
+                  {...createFormFieldProps('content')}
+                />
+              </React.Fragment>
+            );
+          }}
+        />
+      </Form.Wrapper>
+    </div>
   );
 }
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from '../buttons';
 
 export function CardContent(props: {
-  title?: string;
+  title?: string | (() => JSX.Element);
   titleStyle?: React.CSSProperties;
   actions?: { label: string; onClick?: () => void }[];
   children: React.ReactChild | React.ReactChild[];
@@ -18,7 +18,7 @@ export function CardContent(props: {
     <div style={styles.container}>
       {shouldRenderTitle && (
         <div style={combine([styles.title, props.titleStyle])}>
-          {props.title}
+          {props.title instanceof Function ? props.title() : props.title}
         </div>
       )}
       <div>{props.children}</div>

@@ -8,6 +8,14 @@ export function Router() {
     <BrowserRouter>
       <Switch>
         <Route
+          path={routes.details}
+          render={({ location }) => {
+            const queryVariables = new URLSearchParams(location.search);
+            const noteId = queryVariables.get('n');
+            return <Home noteId={noteId} />;
+          }}
+        />
+        <Route
           path={routes.home}
           render={({ location }) => {
             return <Home />;

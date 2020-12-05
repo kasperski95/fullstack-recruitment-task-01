@@ -1,5 +1,6 @@
 import { useStore } from '@src/config/configure-store';
 import { createUseStyle } from '@src/config/theme';
+import { throttle } from 'lodash';
 import React from 'react';
 import { FixedSizeList as List } from 'react-window';
 import { NoteCard } from './note-card';
@@ -12,19 +13,28 @@ export function NotesList() {
   const [height, setHeight] = React.useState(300);
 
   React.useLayoutEffect(() => {
-    const containerHeight = containerRef.current?.clientHeight;
-    if (containerHeight) {
-      setHeight(containerHeight);
-    }
+    const adjustHeight = () => {
+      const containerHeight = containerRef.current?.clientHeight;
+      if (containerHeight) setHeight(Math.max(300, containerHeight));
+    };
+    adjustHeight();
+
+    const throttledAdjustHeight = throttle(adjustHeight, 500);
+    window.addEventListener('resize', throttledAdjustHeight);
+    return () => {
+      window.removeEventListener('resize', throttledAdjustHeight);
+    };
   }, [containerRef]);
 
   return (
-    <div ref={containerRef} style={styles.container}>
+    <div style={styles.container}>
+      <div ref={containerRef} style={styles.dummy} />
       <List
         width='100%'
         height={height}
-        itemSize={100}
+        itemSize={136}
         itemCount={state.notes.length}
+        style={styles.list}
       >
         {NoteCard}
       </List>
@@ -34,6 +44,15 @@ export function NotesList() {
 
 const useStyle = createUseStyle(({ theme, dimensions, shared }) => ({
   container: {
-    flex: 1,
+    height: '100%',
+    position: 'relative',
+  },
+  list: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+  dummy: {
+    height: '100%',
   },
 }));

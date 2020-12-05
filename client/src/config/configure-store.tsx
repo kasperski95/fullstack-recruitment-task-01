@@ -16,6 +16,7 @@ let StoreContext: React.Context<StoreContext<keyof Actions>>;
 
 export function useConfigureStore() {
   const [store, dispatch] = React.useReducer(reducer, initialStore);
+
   StoreContext = React.createContext({ state: store, dispatch });
 
   return {

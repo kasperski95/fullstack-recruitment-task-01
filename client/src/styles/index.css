@@ -14,12 +14,12 @@ code {
 
 * {
   box-sizing: border-box;
-  transition: background-color 0.5s, color 0.25s;
+  transition: background-color 0.5s;
 }
 
 html, body, #root {
   height: 100%;
-  min-width: 500px
+  min-width: 500px;
 }
 
 #root {
@@ -38,21 +38,36 @@ html {
   --scrollbar-track-color: rgba(0,0,0,0.25);
 }
 
-* {
+div {
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb-color)  var(--scrollbar-track-color);
 }
 
 /* Works on Chrome/Edge/Safari */
-*::-webkit-scrollbar {
+div::-webkit-scrollbar {
   width: 8px;
-}
-*::-webkit-scrollbar-track {
-  background:  var(--scrollbar-track-color);
-  border-radius: 8px;
 
 }
-*::-webkit-scrollbar-thumb {
+div::-webkit-scrollbar-track {
+  background:  var(--scrollbar-track-color);
+  border-radius: 8px;
+}
+div::-webkit-scrollbar-thumb {
   background-color: var(--scrollbar-thumb-color);
   border-radius: 8px;
+}
+
+.note-card-content > p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.note-card-content > * {
+  font-size: 1rem !important;
+  margin: 0 !important; 
+  padding: 0 !important; 
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+  text-overflow: ellipsis;
 }

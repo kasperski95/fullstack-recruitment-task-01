@@ -41,7 +41,6 @@ export function FormWrapper<T, R>(props: {
     </Card.Wrapper>
   );
 }
-
 const useStyle = createUseStyle(({ theme, dimensions, shared }) => {
   return {
     container: {

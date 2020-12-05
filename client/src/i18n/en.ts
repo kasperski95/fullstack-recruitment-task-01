@@ -3,5 +3,6 @@ export default {
   home: {
     note: 'Note',
     addNote: 'Add note',
+    deleteNote: 'Delete note',
   },
 };
