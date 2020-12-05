@@ -5,8 +5,7 @@ import { combine } from '@src/modules/css-in-jsx';
 import React from 'react';
 
 export function NoteCard(props: { index: number; style: React.CSSProperties }) {
-  const { dimensions } = useStyle();
-
+  const { styles, dimensions } = useStyle();
   const { state } = useStore();
   const note = state.notes[props.index];
 
@@ -27,10 +26,17 @@ export function NoteCard(props: { index: number; style: React.CSSProperties }) {
           ${note.date.toLocaleDateString()} ${note.date.toLocaleTimeString()}
         `}
       >
-        {note.content}
+        <span style={styles.content}>{note.content}</span>
       </Card.Content>
     </Card.Wrapper>
   );
 }
 
-const useStyle = createUseStyle(({ theme, dimensions, shared }) => ({}));
+const useStyle = createUseStyle(({ theme, dimensions, shared }) => ({
+  content: {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    display: 'block',
+    textOverflow: 'ellipsis',
+  },
+}));

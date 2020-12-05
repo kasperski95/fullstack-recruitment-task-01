@@ -1,4 +1,4 @@
-import { useFormBloc } from '@src/blocs/form';
+import { FormEvents, useFormBloc } from '@src/blocs/form';
 import { Form, FormField } from '@src/components/form';
 import { useI18n } from '@src/config/configure-i18n';
 import { withStore } from '@src/config/configure-store';
@@ -20,7 +20,10 @@ function _NotesForm(props: NotesFormProps & NotesFormStoreProps) {
     },
     {
       onSubmit: (formData) => {
-        props.actions.addNote(formData.content);
+        if (formData.content) {
+          props.actions.addNote(formData.content);
+          formBloc.dispatch(new FormEvents.Reset());
+        }
       },
     }
   );
@@ -34,6 +37,7 @@ function _NotesForm(props: NotesFormProps & NotesFormStoreProps) {
             <React.Fragment>
               <FormField.Text
                 label={translations.home.note}
+                required={true}
                 {...createFormFieldProps('content')}
               />
             </React.Fragment>

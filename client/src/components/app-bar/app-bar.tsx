@@ -56,16 +56,17 @@ export function AppBar(props: AppBarProps) {
               })}
           </React.Fragment>
         )}
-        <div style={styles.toggleThemeBtn}>
+        <div style={styles.toggleThemeBtnWrapper}>
           <Button.Icon
+            themeName='accent'
             onClick={() => {
               themeBloc.dispatch(new ThemeEvents.Toggle());
             }}
           >
             {themeBloc.isDarkTheme() ? (
-              <Brightness7Icon />
+              <Brightness7Icon style={styles.toggleThemeBtn} />
             ) : (
-              <Brightness4Icon />
+              <Brightness4Icon style={styles.toggleThemeBtn} />
             )}
           </Button.Icon>
         </div>
@@ -112,9 +113,12 @@ const useStyle = createUseStyle(({ theme, dimensions, shared }) => ({
     flex: 1,
     minWidth: dimensions.gutterMedium,
   },
-  toggleThemeBtn: {
+  toggleThemeBtnWrapper: {
     display: 'flex',
     alignItems: 'center',
     marginRight: -dimensions.gutterMedium,
+  },
+  toggleThemeBtn: {
+    color: theme.accent.strong,
   },
 }));

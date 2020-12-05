@@ -8,4 +8,6 @@ export class Update<T extends { [key: string]: any }> extends FormEvent {
   }
 }
 
+export class Reset extends FormEvent {}
+
 export class Submit extends FormEvent {}

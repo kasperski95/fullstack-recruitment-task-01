@@ -7,6 +7,7 @@ export interface TextFieldProps<T> {
   label: string;
   multiline?: boolean;
   obscure?: boolean;
+  required?: boolean;
   mapValueToString?: (value: T | undefined) => string;
   onChange?: (value: string) => void;
 }
@@ -40,6 +41,7 @@ export function TextField<T>(props: TextFieldProps<T>) {
       label={props.label}
       autoComplete='none'
       multiline={props.multiline}
+      required={props.required}
       type={props.obscure ? 'password' : undefined}
       onChange={(e) => {
         setLocalValue(e.target.value);

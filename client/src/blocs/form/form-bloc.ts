@@ -35,5 +35,9 @@ export class FormBloc<T extends { [key: string]: any }, R> extends Bloc<
         yield new FormStates.ServerError(this.data, err?.message);
       }
     }
+    if (event instanceof FormEvents.Reset) {
+      this.data = this.initialData;
+      yield new FormStates.Editable(this.data);
+    }
   }
 }

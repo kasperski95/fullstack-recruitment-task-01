@@ -95,7 +95,7 @@ export function generateTheme(
       theme.clickable.contrast.main
     ),
     accent: generateMediumTheme(
-      Color(theme.clickable.main).hue(180).toString(),
+      Color(theme.clickable.main).rotate(180).toString(),
       theme.clickable.contrast.main
     ),
   };

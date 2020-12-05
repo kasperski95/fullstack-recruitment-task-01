@@ -22,8 +22,37 @@ html, body, #root {
   min-width: 500px
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
 html {
   background-image: url(/assets/images/omni-bg.svg);
   background-size: cover;
   background-attachment: fixed;
+}
+
+:root {
+  --scrollbar-thumb-color: red;
+  --scrollbar-track-color: rgba(0,0,0,0.25);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-color)  var(--scrollbar-track-color);
+}
+
+/* Works on Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+*::-webkit-scrollbar-track {
+  background:  var(--scrollbar-track-color);
+  border-radius: 8px;
+
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-color);
+  border-radius: 8px;
 }

@@ -1,14 +1,15 @@
 import { createUseStyle, ThemeProvider } from '@src/config/theme';
-import { combine } from '@src/modules/css-in-jsx';
+import { combine, Themes } from '@src/modules/css-in-jsx';
 import React from 'react';
 import { Ripple } from './ripple';
 
 export function IconButton(props: {
   children: React.ReactNode;
+  themeName?: Themes;
   rippleStyle?: React.CSSProperties;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }) {
-  const { theme, styles } = useStyle('clickable');
+  const { theme, styles } = useStyle(props.themeName || 'clickable');
 
   return (
     <ThemeProvider theme={theme}>

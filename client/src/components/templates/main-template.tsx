@@ -41,12 +41,15 @@ const useStyle = createUseStyle(({ theme, dimensions, shared }) => ({
   contentWrapper: {
     display: 'flex',
     width: '100%',
+    flex: 1,
     justifyContent: 'center',
     marginTop: dimensions.gutterMedium,
     paddingLeft: dimensions.gutterMedium,
     paddingRight: dimensions.gutterMedium,
   },
   content: {
+    display: 'flex',
+    flexDirection: 'column',
     flex: 1,
     maxWidth: dimensions.widthLimiter,
   },

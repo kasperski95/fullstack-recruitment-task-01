@@ -4,7 +4,7 @@ import Color from 'color';
 const palette = {
   white: 'white',
   black: 'black',
-  blue: '#1E518A',
+  blue: '#297B74',
 };
 
 export const { ThemeProvider, createUseStyle, theme } = configureTheme({
