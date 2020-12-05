@@ -57,9 +57,11 @@ div::-webkit-scrollbar-thumb {
   border-radius: 8px;
 }
 
-.note-card-content > p {
-  margin-top: 0;
-  margin-bottom: 0;
+.note-card-content  {
+  height: 1.25em;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
 }
 
 .note-card-content > * {
@@ -70,4 +72,5 @@ div::-webkit-scrollbar-thumb {
   overflow: hidden;
   display: block;
   text-overflow: ellipsis;
+
 }
