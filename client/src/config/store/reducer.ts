@@ -2,25 +2,40 @@ import Dayjs from 'dayjs';
 import { v4 as uuid } from 'uuid';
 import { Actions, AppState } from './index';
 
-export function reducer<K extends keyof Actions>(
+export function reducer(
   store: AppState,
-  { type, payload }: { type: K; payload: Actions[K] }
+  { type, payload }: { type: keyof Actions; payload: Actions[typeof type] }
 ): AppState {
-  switch (type as keyof Actions) {
+  // payload type deduction workaround
+  const handle = <K extends keyof Actions>(type: K) => (
+    handler: (payload_: Actions[K]) => AppState
+  ) => {
+    return handler(payload as Actions[K]);
+  };
+
+  switch (type) {
     case 'addNote':
-      return {
+      return handle('addNote')(({ content }) => ({
         ...store,
-        notes: [
-          ...store.notes,
-          { ...payload, date: new Date(), id: uuid() },
-        ].sort((lhs, rhs) => {
-          return Dayjs(lhs.date).isBefore(Dayjs(rhs.date)) ? 1 : -1;
-        }),
-      };
+        notes: [...store.notes, { content, date: new Date(), id: uuid() }].sort(
+          (lhs, rhs) => {
+            return Dayjs(lhs.date).isBefore(Dayjs(rhs.date)) ? 1 : -1;
+          }
+        ),
+      }));
+
+    case 'deleteNode':
+      return handle('deleteNode')(({ nodeId }) => ({
+        ...store,
+        notes: [...store.notes.filter(({ id }) => id !== nodeId)],
+      }));
+
     case 'ping':
       console.log('pong');
       return store;
+
     default:
+      console.error(`Unhandled actions ${type}`);
       return store;
   }
 }

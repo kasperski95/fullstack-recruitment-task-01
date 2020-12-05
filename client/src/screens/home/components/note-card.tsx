@@ -11,10 +11,10 @@ import { Link } from 'react-router-dom';
 
 export function NoteCard(props: { index: number; style: React.CSSProperties }) {
   const { styles, dimensions } = useStyle();
-  const { state } = useStore();
+  const { state, dispatch } = useStore();
   const { translations } = useI18n();
-  const note = state.notes[props.index];
 
+  const note = state.notes[props.index];
   const marginBottom = dimensions.gutterMedium;
 
   return (
@@ -28,14 +28,21 @@ export function NoteCard(props: { index: number; style: React.CSSProperties }) {
       ])}
     >
       <Card.Content
-        actions={[{ label: translations.home.deleteNote, onClick: () => {} }]}
+        actions={[
+          {
+            label: translations.home.deleteNote,
+            onClick: () => {
+              dispatch('deleteNode')({ nodeId: note.id });
+            },
+          },
+        ]}
         title={() => (
           <Link style={styles.title} to={`${routes.details}?n=${note.id}`}>
             {humanizeDate(note.date)}
           </Link>
         )}
       >
-        <span style={styles.content} className='note-card-content'>
+        <span className='note-card-content'>
           <Markdown
             children={note.content.substr(
               0,
@@ -49,7 +56,6 @@ export function NoteCard(props: { index: number; style: React.CSSProperties }) {
 }
 
 const useStyle = createUseStyle(({ theme, dimensions, shared }) => ({
-  content: {},
   title: {
     color: theme.clickable.strong,
     textDecoration: 'none',

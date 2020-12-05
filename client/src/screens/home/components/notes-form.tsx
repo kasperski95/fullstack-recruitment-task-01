@@ -12,7 +12,6 @@ interface NotesFormStoreProps {
 
 function _NotesForm(props: NotesFormProps & NotesFormStoreProps) {
   const { translations } = useI18n();
-  const ref = React.useRef<HTMLDivElement>(null);
 
   const formBloc = useFormBloc(
     'home',
@@ -30,7 +29,7 @@ function _NotesForm(props: NotesFormProps & NotesFormStoreProps) {
   );
 
   return (
-    <div ref={ref}>
+    <div id='notes-form-wrapper'>
       <Form.Wrapper formBloc={formBloc} submitLabel={translations.home.addNote}>
         <Form.Builder
           formBloc={formBloc}

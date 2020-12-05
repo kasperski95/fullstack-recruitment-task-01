@@ -3,6 +3,7 @@ import { createUseStyle } from '@src/config/theme';
 import { throttle } from 'lodash';
 import React from 'react';
 import { FixedSizeList as List } from 'react-window';
+import ResizeObserver from 'resize-observer-polyfill';
 import { NoteCard } from './note-card';
 
 export function NotesList() {
@@ -21,8 +22,13 @@ export function NotesList() {
 
     const throttledAdjustHeight = throttle(adjustHeight, 500);
     window.addEventListener('resize', throttledAdjustHeight);
+
+    const resizeObserver = new ResizeObserver(adjustHeight);
+    resizeObserver.observe(document.getElementById('notes-form-wrapper')!);
+
     return () => {
-      window.removeEventListener('resize', throttledAdjustHeight);
+      window.removeEventListener('resize', adjustHeight);
+      resizeObserver.disconnect();
     };
   }, [containerRef]);
 
