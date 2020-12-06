@@ -1,36 +1,15 @@
 import { useStore } from '@src/config/configure-store';
 import { createUseStyle } from '@src/config/theme';
-import { throttle } from 'lodash';
 import React from 'react';
 import { FixedSizeList as List } from 'react-window';
-import ResizeObserver from 'resize-observer-polyfill';
+import { useNotesListHeight } from '../hooks/use-notes-list-height';
 import { NoteCard } from './note-card';
 
 export function NotesList() {
   const { styles } = useStyle();
   const { state } = useStore();
 
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const [height, setHeight] = React.useState(300);
-
-  React.useLayoutEffect(() => {
-    const adjustHeight = () => {
-      const containerHeight = containerRef.current?.clientHeight;
-      if (containerHeight) setHeight(Math.max(300, containerHeight));
-    };
-    adjustHeight();
-
-    const throttledAdjustHeight = throttle(adjustHeight, 500);
-    window.addEventListener('resize', throttledAdjustHeight);
-
-    const resizeObserver = new ResizeObserver(adjustHeight);
-    resizeObserver.observe(document.getElementById('notes-form-wrapper')!);
-
-    return () => {
-      window.removeEventListener('resize', adjustHeight);
-      resizeObserver.disconnect();
-    };
-  }, [containerRef]);
+  const { containerRef, height } = useNotesListHeight();
 
   return (
     <div style={styles.container}>

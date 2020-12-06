@@ -4,9 +4,9 @@ import { routes } from '@src/config/routes';
 import { createUseStyle } from '@src/config/theme';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { NoteDetails } from './components/note-details';
 import { NotesForm } from './components/notes-form';
 import { NotesList } from './components/notes-list';
+import { NoteModal } from './modals/note-modal';
 
 export function Home(props: { noteId?: string | null }) {
   const { styles } = useStyle();
@@ -21,7 +21,7 @@ export function Home(props: { noteId?: string | null }) {
       modal={
         props.noteId
           ? {
-              component: <NoteDetails noteId={props.noteId!} />,
+              component: <NoteModal noteId={props.noteId!} />,
               onGoBack: () => {
                 history.push(routes.home);
               },

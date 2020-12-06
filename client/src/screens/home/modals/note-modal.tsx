@@ -11,7 +11,7 @@ import { humanizeDate } from '@src/utils/humanize-date';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-export function NoteDetails(props: { noteId: string }) {
+export function NoteModal(props: { noteId: string }) {
   const { styles } = useStyle();
   const { state, dispatch } = useStore();
   const { translations } = useI18n();
