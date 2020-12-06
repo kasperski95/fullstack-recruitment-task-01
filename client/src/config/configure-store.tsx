@@ -21,8 +21,6 @@ export function useConfigureStore() {
 function StoreProvider(props: { children: React.ReactChild }) {
   const [appState, dispatch] = React.useReducer(reducer, initialState);
 
-  console.log('foo');
-
   const curriedDispatcher = React.useCallback(
     (action: keyof Actions) => (payload: any) => {
       dispatch({ type: action, payload });

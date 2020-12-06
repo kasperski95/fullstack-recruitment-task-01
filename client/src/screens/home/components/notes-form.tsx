@@ -1,17 +1,23 @@
 import { FormEvents, useFormBloc } from '@src/blocs/form';
 import { Form, FormField } from '@src/components/form';
+import { useConnection } from '@src/config/configure-connection-utils';
 import { useI18n } from '@src/config/configure-i18n';
 import { withStore } from '@src/config/configure-store';
+import { addNoteMutation } from '@src/gql/add-note-mutation';
+import { Note } from '@src/models/note';
 import React from 'react';
 
 interface NotesFormProps {}
 
 interface NotesFormStoreProps {
-  actions: { addNote: (noteContent: string) => void };
+  actions: {
+    addNote: (note: Note) => void;
+  };
 }
 
 function _NotesForm(props: NotesFormProps & NotesFormStoreProps) {
   const { translations } = useI18n();
+  const { gql } = useConnection();
 
   const formBloc = useFormBloc(
     'home',
@@ -19,9 +25,10 @@ function _NotesForm(props: NotesFormProps & NotesFormStoreProps) {
       content: '',
     },
     {
-      onSubmit: (formData) => {
+      onSubmit: async (formData) => {
         if (formData.content) {
-          props.actions.addNote(formData.content);
+          const note = (await gql(addNoteMutation({ data: formData }))) as Note;
+          props.actions.addNote(note);
           formBloc.dispatch(new FormEvents.Reset());
         }
       },
@@ -55,8 +62,8 @@ export const NotesForm = withStore<NotesFormProps, NotesFormStoreProps>(
   (state, dispatch) => {
     return {
       actions: {
-        addNote: (noteContent) => {
-          dispatch('addNote')({ content: noteContent });
+        addNote: (note) => {
+          dispatch('addNote')({ note });
         },
       },
     };

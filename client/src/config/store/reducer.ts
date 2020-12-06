@@ -7,8 +7,8 @@ export function reducer(
   { type, payload }: { type: keyof Actions; payload: Actions[typeof type] }
 ): AppState {
   switch (type) {
-    case 'addNote':
-      const { content } = payload as Actions['addNote'];
+    case 'createNote': {
+      const { content } = payload as Actions['createNote'];
 
       return {
         ...store,
@@ -16,29 +16,44 @@ export function reducer(
           compareNotes
         ),
       };
+    }
 
-    case 'deleteNode':
+    case 'addNote': {
+      const { note } = payload as Actions['addNote'];
+      note.date = new Date(note.date);
+
+      return {
+        ...store,
+        notes: [...store.notes, note].sort(compareNotes),
+      };
+    }
+
+    case 'deleteNode': {
       const { noteId } = payload as Actions['deleteNode'];
 
       return {
         ...store,
         notes: [...store.notes.filter(({ id }) => id !== noteId)],
       };
+    }
 
-    case 'addNotes':
+    case 'addNotes': {
       const { notes } = payload as Actions['addNotes'];
 
       return {
         ...store,
         notes: [...store.notes, ...notes].sort(compareNotes),
       };
+    }
 
-    case 'ping':
+    case 'ping': {
       console.log('pong');
       return store;
+    }
 
-    default:
+    default: {
       console.error(`Unhandled actions ${type}`);
       return store;
+    }
   }
 }

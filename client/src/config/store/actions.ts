@@ -1,8 +1,11 @@
 import { Note } from '@src/models/note';
 
 export interface Actions {
-  addNote: {
+  createNote: {
     content: string;
+  };
+  addNote: {
+    note: Note;
   };
   addNotes: {
     notes: Note[];
