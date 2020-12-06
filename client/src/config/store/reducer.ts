@@ -1,4 +1,4 @@
-import Dayjs from 'dayjs';
+import { compareNotes } from '@src/gql/utils/compare-notes';
 import { v4 as uuid } from 'uuid';
 import { Actions, AppState } from './index';
 
@@ -13,14 +13,7 @@ export function reducer(
       return {
         ...store,
         notes: [...store.notes, { content, date: new Date(), id: uuid() }].sort(
-          (lhs, rhs) => {
-            const lhsDate = Dayjs(lhs.date);
-            const rhsDate = Dayjs(rhs.date);
-            if (lhsDate.isSame(rhsDate, 'ms')) {
-              return lhs.id.localeCompare(rhs.id);
-            } else
-              return Dayjs(lhs.date).isBefore(Dayjs(rhs.date), 'ms') ? 1 : -1;
-          }
+          compareNotes
         ),
       };
 
@@ -30,6 +23,14 @@ export function reducer(
       return {
         ...store,
         notes: [...store.notes.filter(({ id }) => id !== noteId)],
+      };
+
+    case 'addNotes':
+      const { notes } = payload as Actions['addNotes'];
+
+      return {
+        ...store,
+        notes: [...store.notes, ...notes].sort(compareNotes),
       };
 
     case 'ping':

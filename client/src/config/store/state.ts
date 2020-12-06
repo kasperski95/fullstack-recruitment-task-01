@@ -3,7 +3,7 @@ import { loremIpsum } from 'lorem-ipsum';
 import { v4 as uuid } from 'uuid';
 
 export const state = {
-  notes: [...Array.from(Array(100).keys())].map((i) => {
+  notes: [...Array.from(Array(0).keys())].map((i) => {
     return {
       id: uuid(),
       date: new Date(),

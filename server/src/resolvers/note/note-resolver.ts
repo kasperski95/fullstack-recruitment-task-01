@@ -36,7 +36,7 @@ export class NoteResolver {
     const startIndex = cursor ? notes.findIndex(({ id }) => id === cursor) : 0;
     if (startIndex < 0) throw new ApolloError('Could not find "after".');
 
-    return notes.splice(startIndex, count);
+    return notes.splice(startIndex + 1, count);
   }
 
   @Mutation((returns) => Note)

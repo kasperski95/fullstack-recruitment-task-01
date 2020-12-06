@@ -1,42 +1,49 @@
 import React from 'react';
-import { Actions, AppState, state as initialStore } from './store';
+import { Actions, AppState, state as initialState } from './store';
 import { reducer } from './store/reducer';
 
-interface StoreContext<K extends keyof Actions> {
-  state: AppState;
-  dispatch: <K extends keyof Actions>(
-    action: K
-  ) => (payload: Actions[K]) => void;
-}
-
-let StoreContext: React.Context<StoreContext<keyof Actions>>;
+let StateContext: React.Context<AppState>;
+let DispatcherContext: React.Context<
+  (<K extends keyof Actions>(action: K) => (payload: Actions[K]) => void) | null
+>;
 
 export function useConfigureStore() {
-  const [store, dispatch] = React.useReducer(reducer, initialStore);
-  const curriedDispatcher = (action: keyof Actions) => (payload: any) => {
-    dispatch({ type: action, payload });
-  };
+  StateContext = React.createContext(initialState);
+  DispatcherContext = React.createContext(
+    null as
+      | (<K extends keyof Actions>(action: K) => (payload: Actions[K]) => void)
+      | null
+  );
 
-  StoreContext = React.createContext({
-    state: store,
-    dispatch: curriedDispatcher,
-  });
+  return StoreProvider;
+}
 
-  return {
-    StoreProvider: (props: { children: React.ReactChild }) => {
-      return (
-        <StoreContext.Provider
-          value={{ state: store, dispatch: curriedDispatcher }}
-        >
-          {props.children}
-        </StoreContext.Provider>
-      );
+function StoreProvider(props: { children: React.ReactChild }) {
+  const [appState, dispatch] = React.useReducer(reducer, initialState);
+
+  console.log('foo');
+
+  const curriedDispatcher = React.useCallback(
+    (action: keyof Actions) => (payload: any) => {
+      dispatch({ type: action, payload });
     },
-  };
+    [dispatch]
+  );
+
+  return (
+    <DispatcherContext.Provider value={curriedDispatcher}>
+      <StateContext.Provider value={appState}>
+        {props.children}
+      </StateContext.Provider>
+    </DispatcherContext.Provider>
+  );
 }
 
 export function useStore() {
-  return React.useContext(StoreContext);
+  return {
+    state: React.useContext(StateContext),
+    dispatch: React.useContext(DispatcherContext)!,
+  };
 }
 
 export interface SelectorOutput {
@@ -54,7 +61,8 @@ export function withStore<P, T extends SelectorOutput>(
   ) => T
 ) {
   return (props: P) => {
-    const { state, dispatch } = useStore();
+    const state = React.useContext(StateContext);
+    const dispatch = React.useContext(DispatcherContext)!;
 
     return (
       // @ts-ignore

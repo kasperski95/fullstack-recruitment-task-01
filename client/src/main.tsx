@@ -1,4 +1,4 @@
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/client';
 import React from 'react';
 import { I18nEvents, useI18nBloc } from './blocs/i18n';
 import { ThemeEvents, useThemeBloc } from './blocs/theme';
@@ -22,18 +22,19 @@ export function App() {
   }, [themeBloc, i18nBloc]);
 
   const { ConnectionProvider } = configureConnectionUtils();
-  const { StoreProvider } = useConfigureStore();
+  const StoreProvider = useConfigureStore();
+
   return (
     <ThemeProvider>
       <ThemeChanger>
         <I18n i18nBloc={i18nBloc}>
-          <StoreProvider>
+          <ConnectionProvider>
             <ApolloProvider client={configureApollo()}>
-              <ConnectionProvider>
+              <StoreProvider>
                 <Router />
-              </ConnectionProvider>
+              </StoreProvider>
             </ApolloProvider>
-          </StoreProvider>
+          </ConnectionProvider>
         </I18n>
       </ThemeChanger>
     </ThemeProvider>
