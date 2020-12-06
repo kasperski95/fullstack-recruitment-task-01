@@ -69,4 +69,16 @@ class Repository<T extends EntityBase<T> & { [key: string]: any }> {
       );
     });
   }
+
+  delete(id: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.client.hdel(this.collectionName, id, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
 }

@@ -18,6 +18,7 @@
     "UNPROCESSABLE",
     "dataloader",
     "foobaz",
+    "hdel",
     "hget",
     "hgetall",
     "hmget",
