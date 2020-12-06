@@ -46,11 +46,6 @@ export function reducer(
       };
     }
 
-    case 'ping': {
-      console.log('pong');
-      return store;
-    }
-
     default: {
       console.error(`Unhandled actions ${type}`);
       return store;

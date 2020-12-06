@@ -1,6 +1,6 @@
 import { ApolloError } from 'apollo-server-express';
 import Dayjs from 'dayjs';
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
 import { Note, NoteBuilder } from '../../models/entities/note';
 import { Context } from '../../types';
 import { CreateNoteInput } from './note-input';
@@ -51,7 +51,10 @@ export class NoteResolver {
   }
 
   @Mutation((returns) => Number)
-  async deleteNote(@Ctx() { db }: Context, @Arg('id') id: string) {
+  async deleteNote(
+    @Ctx() { db }: Context,
+    @Arg('id', (type) => ID) id: string
+  ) {
     const repo = db.getRepository(Note);
     await repo.delete(id);
     return 1;

@@ -2,10 +2,12 @@ import { FetcherEvents, useFetcherBloc } from '@src/blocs/fetcher';
 import { Button } from '@src/components/buttons';
 import { Fetcher } from '@src/components/fetcher';
 import { Markdown } from '@src/components/markdown';
+import { useConnection } from '@src/config/configure-connection-utils';
 import { useI18n } from '@src/config/configure-i18n';
 import { useStore } from '@src/config/configure-store';
 import { routes } from '@src/config/routes';
 import { createUseStyle } from '@src/config/theme';
+import { deleteNoteMutation } from '@src/gql/delete-note-mutations';
 import { Note } from '@src/models/note';
 import { humanizeDate } from '@src/utils/humanize-date';
 import React from 'react';
@@ -16,6 +18,7 @@ export function NoteModal(props: { noteId: string }) {
   const { state, dispatch } = useStore();
   const { translations } = useI18n();
   const history = useHistory();
+  const { gql } = useConnection();
 
   const fetcherBloc = useFetcherBloc(
     'note',
@@ -46,10 +49,16 @@ export function NoteModal(props: { noteId: string }) {
             <div style={styles.actionsWrapper}>
               <Button.Flat
                 label={translations.home.deleteNote}
-                onClick={() => {
+                onClick={async () => {
                   dispatch('deleteNode')({ noteId: note.id });
                   history.push(routes.home);
                   fetcherBloc.dispatch(new FetcherEvents.Reset());
+                  try {
+                    await gql(deleteNoteMutation({ id: note.id }));
+                  } catch (err) {
+                    console.error(err);
+                    dispatch('addNote')({ note });
+                  }
                 }}
               />
             </div>

@@ -1,9 +1,11 @@
 import { Card } from '@src/components/card';
 import { Markdown } from '@src/components/markdown';
+import { useConnection } from '@src/config/configure-connection-utils';
 import { useI18n } from '@src/config/configure-i18n';
 import { useStore } from '@src/config/configure-store';
 import { routes } from '@src/config/routes';
 import { createUseStyle } from '@src/config/theme';
+import { deleteNoteMutation } from '@src/gql/delete-note-mutations';
 import { combine } from '@src/modules/css-in-jsx';
 import { humanizeDate } from '@src/utils/humanize-date';
 import React from 'react';
@@ -13,6 +15,7 @@ export function NoteCard(props: { index: number; style: React.CSSProperties }) {
   const { styles, dimensions } = useStyle();
   const { state, dispatch } = useStore();
   const { translations } = useI18n();
+  const { gql } = useConnection();
 
   const note = state.notes[props.index];
   const marginBottom = dimensions.gutterMedium;
@@ -31,8 +34,14 @@ export function NoteCard(props: { index: number; style: React.CSSProperties }) {
         actions={[
           {
             label: translations.home.deleteNote,
-            onClick: () => {
+            onClick: async () => {
               dispatch('deleteNode')({ noteId: note.id });
+              try {
+                await gql(deleteNoteMutation({ id: note.id }));
+              } catch (err) {
+                console.error(err);
+                dispatch('addNote')({ note });
+              }
             },
           },
         ]}

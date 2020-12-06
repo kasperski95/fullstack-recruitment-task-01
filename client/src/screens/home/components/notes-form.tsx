@@ -3,7 +3,7 @@ import { Form, FormField } from '@src/components/form';
 import { useConnection } from '@src/config/configure-connection-utils';
 import { useI18n } from '@src/config/configure-i18n';
 import { withStore } from '@src/config/configure-store';
-import { addNoteMutation } from '@src/gql/add-note-mutation';
+import { createNoteMutation } from '@src/gql/create-note-mutation';
 import { Note } from '@src/models/note';
 import React from 'react';
 
@@ -27,7 +27,9 @@ function _NotesForm(props: NotesFormProps & NotesFormStoreProps) {
     {
       onSubmit: async (formData) => {
         if (formData.content) {
-          const note = (await gql(addNoteMutation({ data: formData }))) as Note;
+          const note = (await gql(
+            createNoteMutation({ data: formData })
+          )) as Note;
           props.actions.addNote(note);
           formBloc.dispatch(new FormEvents.Reset());
         }
