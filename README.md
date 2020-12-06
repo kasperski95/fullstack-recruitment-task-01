@@ -1,63 +1,39 @@
-# React-Express-GraphQL Starter <!-- omit in toc -->
+# Fullstack Recruitment Task  <!-- omit in toc -->
+Notes list.
 
 ## Table of Contents <!-- omit in toc -->
-- [Getting Started - Server](#getting-started---server)
+- [Getting Started](#getting-started)
   - [Install Dependencies](#install-dependencies)
-  - [Create .env](#create-env)
-  - [Install Node Dependencies](#install-node-dependencies)
-  - [Create ormconfig.json](#create-ormconfigjson)
-  - [Create database & fill with mock data](#create-database--fill-with-mock-data)
-  - [Start the server](#start-the-server)
-- [Getting Started - Client](#getting-started---client)
-  - [Install Dependencies](#install-dependencies-1)
+  - [Install Node Modules](#install-node-modules)
+  - [Run application](#run-application)
+- [Main (Technical) Features](#main-technical-features)
 
 ---
 
-## Getting Started - Server
+## Getting Started 
 ### Install Dependencies
-- Powershell Core 7
 - Node.js
+- Redis Server
 
-### Create .env
-```
-PORT=4000
-TOKEN_SECRET=___
-```
-
-### Install Node Dependencies
+### Install Node Modules
 ```sh
+client> npm i
 server> npm i
 ```
 
-### Create ormconfig.json
-```json
-{
-  "type": "postgres",
-  "host": "localhost",
-  "port": 5432,
-  "username": "___",
-  "password": "___",
-  "database": "TMP_DATABASE",
-  "entities": ["src/entities/*.ts"],
-  "autoSchemaSync": true,
-  "logging": true
-}
-```
+### Run application
+1. Start Redis Server
+2. Start Apollo Server
+    ```sh
+    server> npm run dev # or npm start
+    ```
+3. Run App
+    ```sh
+    client> npm run dev
+    ```
 
-### Create database & fill with mock data
-```
-server> ./bin/init.ps1
-server> ./bin/mock.ps1
-```
-
-### Start the server
-```
-server> npm run dev
-```
-NOTE: Sometimes server doesn't start correctly (errors regarding metadata are thrown). In such situations trigger reloading by modifying and saving any project's file. 
-
-## Getting Started - Client
-
-### Install Dependencies
-- Node.js
-
+## Main (Technical) Features
+- windowing
+- Redis usage
+- typed action dispatcher
+- many more...
