@@ -1,3 +1,4 @@
+import { ApolloError } from 'apollo-server-express';
 import Dayjs from 'dayjs';
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Note, NoteBuilder } from '../../models/entities/note';
@@ -15,15 +16,27 @@ export class NoteResolver {
   }
 
   @Query((returns) => [Note])
-  async notes(@Ctx() { db }: Context) {
+  async notes(
+    @Ctx() { db }: Context,
+    @Arg('first') count: number,
+    @Arg('after', { nullable: true }) cursor?: string
+  ) {
     const repo = db.getRepository(Note);
-    return (await repo.findAll()).sort((lhs, rhs) => {
+
+    const notes = (await repo.findAll()).sort((lhs, rhs) => {
       const lhsDate = Dayjs(lhs.date);
       const rhsDate = Dayjs(rhs.date);
       if (lhsDate.isSame(rhsDate, 'ms')) {
         return lhs.id.localeCompare(rhs.id);
       } else return Dayjs(lhs.date).isBefore(Dayjs(rhs.date), 'ms') ? 1 : -1;
     });
+
+    if (notes.length === 0) return notes;
+
+    const startIndex = cursor ? notes.findIndex(({ id }) => id === cursor) : 0;
+    if (startIndex < 0) throw new ApolloError('Could not find "after".');
+
+    return notes.splice(startIndex, count);
   }
 
   @Mutation((returns) => Note)
