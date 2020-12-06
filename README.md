@@ -1,5 +1,7 @@
 # Fullstack Recruitment Task  <!-- omit in toc -->
-Notes list.
+List of notes.
+
+![screen](readme/screen.png)
 
 ## Table of Contents <!-- omit in toc -->
 - [Getting Started](#getting-started)

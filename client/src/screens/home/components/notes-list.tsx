@@ -9,7 +9,7 @@ import InfiniteLoader from 'react-window-infinite-loader';
 import { useNotesListHeight } from '../hooks/use-notes-list-height';
 import { NoteCard } from './note-card';
 
-const initialVariables = { first: 5, after: undefined as string | undefined };
+const initialVariables = { first: 10, after: undefined as string | undefined };
 
 export function NotesList() {
   const { styles } = useStyle();
@@ -21,7 +21,7 @@ export function NotesList() {
     (async () => {
       try {
         const notes = await gql<Note[], typeof initialVariables>(
-          notesQuery({ first: 10, after: undefined })
+          notesQuery(initialVariables)
         );
         dispatch('addNotes')({
           notes: (notes || []).map((note) => {
@@ -30,7 +30,7 @@ export function NotesList() {
           }),
         });
       } catch (err) {
-        throw new Error(err);
+        console.log(err);
       }
     })();
     // eslint-disable-next-line
