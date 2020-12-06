@@ -8,6 +8,7 @@ import { useStore } from '@src/config/configure-store';
 import { routes } from '@src/config/routes';
 import { createUseStyle } from '@src/config/theme';
 import { deleteNoteMutation } from '@src/gql/delete-note-mutations';
+import { noteQuery } from '@src/gql/note-query';
 import { Note } from '@src/models/note';
 import { humanizeDate } from '@src/utils/humanize-date';
 import React from 'react';
@@ -15,23 +16,23 @@ import { useHistory } from 'react-router-dom';
 
 export function NoteModal(props: { noteId: string }) {
   const { styles } = useStyle();
-  const { state, dispatch } = useStore();
   const { translations } = useI18n();
   const history = useHistory();
+  const { dispatch } = useStore();
   const { gql } = useConnection();
 
   const fetcherBloc = useFetcherBloc(
     'note',
     async ({ noteId, notes }: { noteId: string; notes: Note[] }) => {
-      return notes.find(({ id }) => noteId === id)!;
+      const note = (await gql(noteQuery({ id: noteId }))) as Note;
+      note.date = new Date(note.date);
+      return note;
     }
   );
 
   React.useEffect(() => {
-    fetcherBloc.dispatch(
-      new FetcherEvents.Fetch({ noteId: props.noteId, notes: state.notes })
-    );
-  }, [props.noteId, fetcherBloc, state.notes]);
+    fetcherBloc.dispatch(new FetcherEvents.Fetch({ noteId: props.noteId }));
+  }, [props.noteId, fetcherBloc]);
 
   React.useEffect(() => () => {
     fetcherBloc.dispatch(new FetcherEvents.Reset());

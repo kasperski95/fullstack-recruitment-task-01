@@ -47,7 +47,17 @@ class Repository<T extends EntityBase<T> & { [key: string]: any }> {
         if (err) {
           reject(err);
         } else {
-          resolve(new this.EntityType().buildFromStrings(JSON.parse(val)));
+          if (!val)
+            reject(
+              new Error(
+                `Could not find '${this.collectionName}' with the key '${id}'`
+              )
+            );
+          try {
+            resolve(new this.EntityType().buildFromStrings(JSON.parse(val)));
+          } catch (err) {
+            reject(err);
+          }
         }
       });
     });

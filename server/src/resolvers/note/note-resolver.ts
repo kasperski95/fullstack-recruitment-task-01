@@ -10,7 +10,7 @@ export class NoteResolver {
   constructor() {}
 
   @Query((returns) => Note)
-  async note(@Ctx() { db }: Context, @Arg('id') id: string) {
+  async note(@Ctx() { db }: Context, @Arg('id', (type) => ID) id: string) {
     const repo = db.getRepository(Note);
     return repo.findOne(id);
   }
