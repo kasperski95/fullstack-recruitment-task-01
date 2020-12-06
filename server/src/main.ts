@@ -3,6 +3,7 @@ import cors from 'cors';
 import express from 'express';
 import { createServer } from 'http';
 import { generateSchema } from './utils/generate-schema';
+import { InMemoryDatabase } from './utils/in-memory-database';
 import { Logger } from './utils/logger';
 
 const PORT = process.env.PORT || 4000;
@@ -13,12 +14,14 @@ const PORT = process.env.PORT || 4000;
 
   try {
     const apolloServer = new ApolloServer({
+      context: {
+        db: new InMemoryDatabase(),
+      },
       schema: await generateSchema(),
       playground: true,
       logger: new Logger().setLabel('apollo'),
     });
 
-    // server
     const app = express();
     app.use(cors());
     app.use(express.json());

@@ -1,4 +1,4 @@
-export abstract class Builder<T> {
+export abstract class BuilderBase<T> {
   abstract build(): T;
 
   protected promisify<T>(obj: T): Promise<T> {
