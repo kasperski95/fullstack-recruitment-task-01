@@ -28,6 +28,7 @@
     "express": "4.17.1",
     "http-status-codes": "2.1.2",
     "jsonwebtoken": "8.5.1",
+    "lorem-ipsum": "^2.0.3",
     "lru_map": "0.4.0",
     "moment": "2.27.0",
     "momentjs": "2.0.0",
@@ -44,8 +45,6 @@
   "scripts": {
     "start": "ts-node -r  dotenv/config ./src/index.ts",
     "dev": "ts-node-dev -r dotenv/config --no-notify --respawn src/index.ts",
-    "mock": "ts-node-dev --no-notify src/mock.ts",
-    "mock:test": "ts-node-dev --no-notify tests/mock.ts",
-    "test": "jest --runInBand"
+    "mock": "ts-node-dev --no-notify src/index-mock.ts"
   }
 }
