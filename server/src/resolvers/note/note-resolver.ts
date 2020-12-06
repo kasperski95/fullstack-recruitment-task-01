@@ -1,6 +1,6 @@
 import { ApolloError } from 'apollo-server-express';
 import Dayjs from 'dayjs';
-import { Arg, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Ctx, ID, Int, Mutation, Query, Resolver } from 'type-graphql';
 import { Note, NoteBuilder } from '../../models/entities/note';
 import { Context } from '../../types';
 import { CreateNoteInput } from './note-input';
@@ -18,8 +18,8 @@ export class NoteResolver {
   @Query((returns) => [Note])
   async notes(
     @Ctx() { db }: Context,
-    @Arg('first') count: number,
-    @Arg('after', { nullable: true }) cursor?: string
+    @Arg('first', (type) => Int) count: number,
+    @Arg('after', (type) => ID, { nullable: true }) cursor?: string
   ) {
     const repo = db.getRepository(Note);
 
