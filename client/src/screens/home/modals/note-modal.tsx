@@ -34,9 +34,12 @@ export function NoteModal(props: { noteId: string }) {
     fetcherBloc.dispatch(new FetcherEvents.Fetch({ noteId: props.noteId }));
   }, [props.noteId, fetcherBloc]);
 
-  React.useEffect(() => () => {
-    fetcherBloc.dispatch(new FetcherEvents.Reset());
-  });
+  React.useEffect(
+    () => () => {
+      fetcherBloc.dispatch(new FetcherEvents.Reset());
+    },
+    [fetcherBloc]
+  );
 
   return (
     <Fetcher

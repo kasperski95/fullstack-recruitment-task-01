@@ -28,7 +28,7 @@ export function Stepper(props: {
       window.removeEventListener('resize', throttledHandler);
       throttledHandler.cancel();
     };
-  });
+  }, []);
 
   const renderer = props.steps[props.activeIndex].renderer;
   const shouldRenderBody = !!renderer;

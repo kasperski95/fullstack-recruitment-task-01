@@ -9,20 +9,22 @@ interface BlocBuilderProps<E extends BlocEvent, S extends BlocState> {
   debugId?: string;
 }
 
-export function BlocBuilder<E extends BlocEvent, S extends BlocState>(
-  props: BlocBuilderProps<E, S>
-) {
+export function BlocBuilder<E extends BlocEvent, S extends BlocState>({
+  listener,
+  bloc,
+  builder,
+}: BlocBuilderProps<E, S>) {
   const [state, setState] = React.useState(null as S | null);
 
   useEffect(() => {
-    const sub = props.bloc.subscribe((newState) => {
+    const sub = bloc.subscribe((newState) => {
       setState(newState);
-      if (props.listener) props.listener(newState);
+      if (listener) listener(newState);
     });
     return () => {
       sub.unsubscribe();
     };
-  });
+  }, [bloc, listener]);
 
-  return props.builder(state || props.bloc.initialState);
+  return builder(state || bloc.initialState);
 }

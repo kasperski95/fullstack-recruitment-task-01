@@ -70,7 +70,7 @@ export function NotesList() {
       <div ref={containerRef} style={styles.dummy} />
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
-        itemCount={1000}
+        itemCount={state.notes.length + 1}
         loadMoreItems={loadMoreItems}
       >
         {(p) => {
